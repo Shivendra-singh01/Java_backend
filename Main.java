@@ -3,6 +3,17 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
+
+    public static BankAccount findAccount(HashMap <String,BankAccount> accounts, String name) {
+        if(accounts.containsKey(name)) {
+            return accounts.get(name);
+        }
+        else {
+            System.out.println("Account not found!");
+            return null;
+        }
+        
+    }
     public static void main(String[] args) {
         BankAccount account_01= new BankAccount();
         account_01.setName("Anshul");
@@ -25,59 +36,58 @@ public class Main {
         // accounts.get(1).deposit(100);
         // accounts.get(2).deposit(300);
 
+        Scanner sc= new Scanner(System.in);
+
         HashMap <String,BankAccount> accounts = new HashMap<>();
         accounts.put("Anshul", account_01);
         accounts.put("Sidd", account_02);
         accounts.put("Nitin", account_03);
 
-        
-        Scanner sc= new Scanner(System.in);
+    
         while(true) {
+            System.out.println();
             System.out.println("Enter 1: Deposit");
             System.out.println("Enter 2: Withdraw");
             System.out.println("Enter 3: View All Accounts");
             System.out.println("Enter 4: Exit");
             System.out.print("Please give input: ");
+            System.out.println();
             int i= sc.nextInt();
             switch(i) {
                 case 1:
                     System.out.println("Enter your Account Holder Name: ");
                     sc.nextLine();
                     String j=sc.nextLine();
-                    if(accounts.containsKey(j)) {
-                        System.out.println("Your Accounts Details are:");
-                        accounts.get(j).accDetails();
-                        System.out.println("Please Verify and enter the Amount to Deposit: ");
+                    BankAccount acc = findAccount(accounts, j);
+                    if(acc!=null) {
+                        System.out.println("Enter an amount to deposit: ");
                         float newDepositAmount = sc.nextFloat();
-                        accounts.get(j).deposit(newDepositAmount);
-                        System.out.println("Your Updated Balance is:");
-                        accounts.get(j).accDetails();
+                        acc.deposit(newDepositAmount);
+                        System.out.println("Updated account:");
+                        acc.accDetails(); 
                     }
-                    else{
-                        System.out.println("Name doesn't exist.\n Check the spelling or another name!");
-                    }
-                    break;
+                   
+                    break;     
+                
                 
                 case 2:
                     System.out.println("Enter your Account Holder Name: ");
                     sc.nextLine();
                     String k=sc.nextLine();
-                    if(accounts.containsKey(k)) {
-                        System.out.println("Your Accounts details are:");
-                        accounts.get(k).accDetails();
-                        System.out.println("Please Verify and Enter the Amount to Withdraw: ");
+                    BankAccount acco = findAccount(accounts, k);
+                    if(acco!=null) {
+                        System.out.println("Enter an amount to withdraw: ");
                         float newWithdrawAmount = sc.nextFloat();
-                        accounts.get(k).withdraw(newWithdrawAmount);
-                        System.out.println("Your Updated Balance is:");
-                        accounts.get(k).accDetails();
+                        acco.withdraw(newWithdrawAmount);
+                        System.out.println("Updated account:");
+                        acco.accDetails();
                     }
-                    else{
-                        System.out.println("Name doesn't exist.\n Check the spelling or another name!");
-                    }
+                     
                     break;
 
                 case 3:
                     for(String key: accounts.keySet()) {
+                    System.out.println("Account: " + key);
                     accounts.get(key).accDetails();
                 }
                 break;
@@ -90,8 +100,7 @@ public class Main {
                 default:
                     System.out.println("Choose a Valid Option!");
             }    
-        
-        }
+        }    
 
         
     }
